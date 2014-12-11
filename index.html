@@ -23,10 +23,16 @@
             background-color:black;
             color:white;
         }
+        #ipt{
+            outline:none;
+            border:1px solid black;
+            background:gray;
+        }
     </style>
 </head>
 <body>
     <h1>Fire Watch Demo</h1>
+    <h3>Please Choose a Folder:  <input type="text" value="/Users/kamisama/vimfiles" id="ipt"> <button onclick="init()">Start Watch</button></input></h3>
     <h3>console.log:</h3>
     <div id="cs"></div>
     <H3>The wait operation...</H3>
@@ -51,6 +57,7 @@ function DateToMilliseconds(date) {
 }
 
 function init() {
+    path = document.getElementById('ipt').value;
     console.log("Start watch the Folder:"+path+"    ....");
     logs("Start watch the Folder:"+path+"    ....");
     watcher(path);
@@ -165,7 +172,7 @@ function scanFolder(path){
     return folderList;
 }
 
-init();
+
 
 function logs(result){
     var cs = document.getElementById('cs');
