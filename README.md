@@ -1,20 +1,18 @@
 Fire-watch
 ==========
 
-### Node moudule
+### Install Node moudule
 
 ```cmd
   npm install pathwatcher
   npm install fs
 ```
 
-### config
+### install ATOM-SHELL
 
-open `app.js` modified the `path = '/Users/kamisama/vimfiles';` 
-  
 
-### test
+### RUN test
 
 ```cmd
-  node app.js
+  open this "main.js" in "atom-shell"
 ```
