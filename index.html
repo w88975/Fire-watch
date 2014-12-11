@@ -113,24 +113,25 @@ function watcher(pathorfile) {
         }
         watcher(addFile);
         if (addFile!="" && addFile != undefined){
+            var date =new Date();
             switch(type){
                 case 1:
                 console.log("rename");
                 logs("rename");
-                console.log(addFile);
-                logs(addFile);
+                console.log(addFile+"   "+date.toLocaleTimeString());
+                logs(addFile+"   "+date.toLocaleTimeString());
                 break;
                 case 2:
                 console.log("Add Folder");
                 logs("Add Folder");
-                console.log(addFile);
-                logs(addFile);
+                console.log(addFile+"   "+date.toLocaleTimeString());
+                logs(addFile+"   "+date.toLocaleTimeString());
                 break;
                 case 3:
                 console.log("delete Folder");
                 logs("delete Folder");
-                console.log(addFile);
-                logs(addFile);
+                console.log(addFile+"   "+date.toLocaleTimeString());
+                logs(addFile+"   "+date.toLocaleTimeString());
                 break;
             }
         }

@@ -6,6 +6,7 @@ require('crash-reporter').start();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
+var mainWindow = null;
 console.log('atom-shell');
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
