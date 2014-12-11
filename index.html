@@ -58,7 +58,7 @@ function DateToMilliseconds(date) {
 
 function init() {
     path = document.getElementById('ipt').value;
-    console.log("Start watch the Folder:"+path+"    ....");
+    console.log("%cStart watch the Folder:"+path+"    ....","color:red");
     logs("Start watch the Folder:"+path+"    ....");
     watcher(path);
     DirArray = scanFolder(path);
@@ -71,6 +71,7 @@ function init() {
 
 function watcher(pathorfile) {
     watcher1 = PathWatcher.watch(pathorfile, function(event) {
+        logs(event);
         temp = DirArray;
         DirArray = scanFolder(path);
         initArray = scanFolder(path);
@@ -137,21 +138,6 @@ function watcher(pathorfile) {
                 break;
             }
         }
-        /*
-        if (event == "rename" && this.path.indexOf("/.Trash/")<=-1) {
-        console.log("rename");
-        console.log(this.path);
-    }
-    */
-    //console.log(this.path+",event:"+event);
-    /*
-    console.log("temp:"
-    );
-    console.log(temp);
-    console.log("dir:");
-    console.log(initArray);
-    console.log(this.path+",event："+event);*/
-    //PathWatcher2.close();
 });
 }
 
@@ -182,6 +168,8 @@ function logs(result){
     var elei = document.createElement('h4');
     elei.innerHTML = result;
     elei.style.color="rgb('170,170,170')";
+    elei.style.marginTop ="-10px";
+    elei.style.paddingTop ="-10px";
     cs.appendChild(elei);
 }
 
