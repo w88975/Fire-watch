@@ -4,6 +4,9 @@
     <title>Fire Watch Demo</title>
     <style>
         body{
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid white;
             background-color:rgb(48,48,48);
             color:gray;
             font-family:Helvetica,Arial,sans-serif;
@@ -37,32 +40,24 @@
     <div id="cs"></div>
     <H3>The wait operation...</H3>
 </body>
+
 <script>
-var fs = require('fs'),
-util = require('util'),
-//要监控的文件路径
-path = '/Users/kamisama/vimfiles';
+var fs = require('fs');
 var PathWatcher = require('pathwatcher');
+//要监控的文件路径
+path = '';
 var watcher1 = null;
 var DirArray = [];
 var temp = [];
-var FileArray = [];
 var initArray = [];
-var tempTime = 0;
-
-
-function DateToMilliseconds(date) {
-    var a=date.split(":");
-    return times = a[0]*60*60*1000+a[1]*60*1000+a[2]*1000;
-}
 
 function init() {
     path = document.getElementById('ipt').value;
-    console.log("%cStart watch the Folder:"+path+"    ....","color:red");
-    logs("Start watch the Folder:"+path+"    ....");
+    console.log("%cStart watch the Folder:" + path + "    ....","color:red");
+    logs("Start watch the Folder:" + path + "    ....");
     watcher(path);
     DirArray = scanFolder(path);
-    for (var i=0;i<DirArray.length;i++) {
+    for (var i = 0;i < DirArray.length;i++) {
         watcher(DirArray[i]);
     }
 
@@ -72,69 +67,95 @@ function init() {
 function watcher(pathorfile) {
     watcher1 = PathWatcher.watch(pathorfile, function(event) {
         temp = DirArray;
+        temp2 = [];
+        temp2.push(DirArray);
         DirArray = scanFolder(path);
         initArray = scanFolder(path);
-        var type =0;
+        var type = 0;
         if (temp.length == DirArray.length ) {
-            type =1;
+            type = 1;
         }else if(temp.length < DirArray.length) {
-            type =2;
+            type = 2;
         }else if (temp.length > DirArray.length) {
-            type =3;
+            type = 3;
         }
 
-        if (type ==1 ||type ==2) {
-            for (var i=0;i<DirArray.length;i++) {
-                for (var j=0;j<temp.length;j++) {
-                    if (DirArray[i] == temp[j]){
+        if (type == 1 ||type == 2) {
+            for (var i = 0;i < DirArray.length;i++) {
+                for (var j = 0;j < temp.length;j++) {
+                    if (DirArray[i] == temp[j]) {
                         delete initArray[i];
                     }
                 }
             }
         }
-        
+
         if(type == 3) {
             initArray = temp;
-            //initArray.push(temp);
-            for (var i=0;i<temp.length;i++) {
-                for (var j=0;j<DirArray.length;j++) {
-                    if (temp[i] == DirArray[j]){
+            for (var i = 0;i < temp.length;i++) {
+                for (var j = 0;j < DirArray.length;j++) {
+                    if (temp[i] == DirArray[j]) {
                         delete initArray[i];
                     }
                 }
             }
         }
 
-        var addFile=[];
-        for (var i= 0;i<initArray.length;i++) {
-            if (initArray[i]!=""&&initArray[i]!=undefined){
-                addFile.push(initArray[i]);
+        var changeFolderList = [];
+        var reIndex = 0;
+        for (var i= 0;i < initArray.length;i++) {
+            if (initArray[i] != "" && initArray[i] != undefined) {
+                changeFolderList.push(initArray[i]);
+                reIndex = i;
             }
         }
 
-        if (addFile!=[] && addFile != undefined){
-            for (var i =0 ;i<addFile.length;i++) {
-                var date =new Date();
-                switch(type){
+
+        if (changeFolderList != [] && changeFolderList != undefined) {
+            for (var i = 0 ;i < changeFolderList.length;i++) {
+                var date = new Date();
+                switch(type) {
                     case 1:
-                        console.log("rename");
-                        logs("rename");
-                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
-                        logs(addFile[i]+"   "+date.toLocaleTimeString());
-                        watcher(addFile[i]);
+                        if (changeFolderList.length == 1) {
+                            logs("oldName");
+                            console.log("oldName");
+                            console.log(temp2[0][reIndex] +"   "+ date.toLocaleTimeString());
+                            logs(temp2[0][reIndex] +"   "+ date.toLocaleTimeString());
+                            logs("rename");
+                            console.log("rename");
+                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            watcher(changeFolderList[i]);
+                        }else{
+                            console.log('delete');
+                            logs('delete');
+                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            watcher(changeFolderList[i]);
+                            console.log("Add Folder");
+                            logs("Add Folder");
+                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                            watcher(changeFolderList[i]);
+                        }
+
+                        //logs("rename：more");
+                        //console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        //logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        //watcher(changeFolderList[i]);
                     break;
                     case 2:
                         console.log("Add Folder");
                         logs("Add Folder");
-                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
-                        logs(addFile[i]+"   "+date.toLocaleTimeString());
-                        watcher(addFile[i]);
+                        console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        watcher(changeFolderList[i]);
                     break;
                     case 3:
                         console.log("delete Folder");
                         logs("delete Folder");
-                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
-                        logs(addFile[i]+"   "+date.toLocaleTimeString());
+                        console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                     break;
                 }
             }
@@ -142,7 +163,7 @@ function watcher(pathorfile) {
     });
 }
 
-function scanFolder(path){
+function scanFolder(path) {
     var fileList = [],
     folderList = [],
     walk = function(path, fileList, folderList) {
@@ -168,9 +189,9 @@ function logs(result){
     var cs = document.getElementById('cs');
     var elei = document.createElement('h4');
     elei.innerHTML = result;
-    elei.style.color="rgb('170,170,170')";
-    elei.style.marginTop ="-10px";
-    elei.style.paddingTop ="-10px";
+    elei.style.color = "rgb('170,170,170')";
+    elei.style.marginTop = "-10px";
+    elei.style.paddingTop = "-10px";
     cs.appendChild(elei);
 }
 
