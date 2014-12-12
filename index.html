@@ -71,7 +71,6 @@ function init() {
 
 function watcher(pathorfile) {
     watcher1 = PathWatcher.watch(pathorfile, function(event) {
-        logs(event);
         temp = DirArray;
         DirArray = scanFolder(path);
         initArray = scanFolder(path);
@@ -93,9 +92,10 @@ function watcher(pathorfile) {
                 }
             }
         }
-
+        
         if(type == 3) {
             initArray = temp;
+            //initArray.push(temp);
             for (var i=0;i<temp.length;i++) {
                 for (var j=0;j<DirArray.length;j++) {
                     if (temp[i] == DirArray[j]){
@@ -105,40 +105,41 @@ function watcher(pathorfile) {
             }
         }
 
-
-        var addFile="";
+        var addFile=[];
         for (var i= 0;i<initArray.length;i++) {
             if (initArray[i]!=""&&initArray[i]!=undefined){
-                addFile =initArray[i];
+                addFile.push(initArray[i]);
             }
         }
 
-        if (addFile!="" && addFile != undefined){
-            var date =new Date();
-            switch(type){
-                case 1:
-                console.log("rename");
-                logs("rename");
-                console.log(addFile+"   "+date.toLocaleTimeString());
-                logs(addFile+"   "+date.toLocaleTimeString());
-                watcher(addFile);
-                break;
-                case 2:
-                console.log("Add Folder");
-                logs("Add Folder");
-                console.log(addFile+"   "+date.toLocaleTimeString());
-                logs(addFile+"   "+date.toLocaleTimeString());
-                watcher(addFile);
-                break;
-                case 3:
-                console.log("delete Folder");
-                logs("delete Folder");
-                console.log(addFile+"   "+date.toLocaleTimeString());
-                logs(addFile+"   "+date.toLocaleTimeString());
-                break;
+        if (addFile!=[] && addFile != undefined){
+            for (var i =0 ;i<addFile.length;i++) {
+                var date =new Date();
+                switch(type){
+                    case 1:
+                        console.log("rename");
+                        logs("rename");
+                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
+                        logs(addFile[i]+"   "+date.toLocaleTimeString());
+                        watcher(addFile[i]);
+                    break;
+                    case 2:
+                        console.log("Add Folder");
+                        logs("Add Folder");
+                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
+                        logs(addFile[i]+"   "+date.toLocaleTimeString());
+                        watcher(addFile[i]);
+                    break;
+                    case 3:
+                        console.log("delete Folder");
+                        logs("delete Folder");
+                        console.log(addFile[i]+"   "+date.toLocaleTimeString());
+                        logs(addFile[i]+"   "+date.toLocaleTimeString());
+                    break;
+                }
             }
         }
-});
+    });
 }
 
 function scanFolder(path){
