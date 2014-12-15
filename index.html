@@ -51,18 +51,26 @@ var DirArray = [];
 var temp = [];
 var initArray = [];
 
+
+//start watch
 function init() {
     path = document.getElementById('ipt').value;
-    console.log("%cStart watch the Folder:" + path + "    ....","color:red");
-    logs("Start watch the Folder:" + path + "    ....");
+    logs("%cStart watch the Folder:" + path + "    ....","color:red");
     watcher(path);
     DirArray = scanFolder(path);
     for (var i = 0;i < DirArray.length;i++) {
         watcher(DirArray[i]);
     }
-
 }
 
+
+//close all watcher
+function closeWatch() {
+    for ( var i = 0; i < DirArray.length; i++) {
+        watcher1.close(DirArray[i]);
+    }
+    console.log("close watche");
+}
 
 function watcher(pathorfile) {
     watcher1 = PathWatcher.watch(pathorfile, function(event) {
@@ -115,47 +123,35 @@ function watcher(pathorfile) {
             for (var i = 0 ;i < changeFolderList.length;i++) {
                 var date = new Date();
                 switch(type) {
-                    case 1:
+                    case 999999999:
                         if (changeFolderList.length == 1) {
                             logs("oldName");
-                            console.log("oldName");
-                            console.log(temp2[0][reIndex] +"   "+ date.toLocaleTimeString());
                             logs(temp2[0][reIndex] +"   "+ date.toLocaleTimeString());
+
                             logs("rename");
-                            console.log("rename");
-                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             watcher(changeFolderList[i]);
                         }else{
-                            console.log('delete');
                             logs('delete');
-                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             watcher(changeFolderList[i]);
-                            console.log("Add Folder");
+
                             logs("Add Folder");
-                            console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                             watcher(changeFolderList[i]);
                         }
 
-                        //logs("rename：more");
-                        //console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
-                        //logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
-                        //watcher(changeFolderList[i]);
+
                     break;
                     case 2:
-                        console.log("Add Folder");
                         logs("Add Folder");
-                        console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                         logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                         watcher(changeFolderList[i]);
                     break;
                     case 3:
-                        console.log("delete Folder");
                         logs("delete Folder");
-                        console.log(changeFolderList[i] +"   "+ date.toLocaleTimeString());
                         logs(changeFolderList[i] +"   "+ date.toLocaleTimeString());
+                        watcher1.close(changeFolderList[i]);
                     break;
                 }
             }
@@ -186,6 +182,7 @@ function scanFolder(path) {
 
 
 function logs(result){
+    console.log(result);
     var cs = document.getElementById('cs');
     var elei = document.createElement('h4');
     elei.innerHTML = result;
